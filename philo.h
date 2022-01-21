@@ -6,7 +6,7 @@
 /*   By: eozben <eozben@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 21:05:16 by eozben            #+#    #+#             */
-/*   Updated: 2022/01/21 23:00:40 by eozben           ###   ########.fr       */
+/*   Updated: 2022/01/21 23:50:07 by eozben           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,5 +17,6 @@
 # include <unistd.h>
 # include <pthread.h>
 # include <stdlib.h>
+# include <sys/time.h>
 
 #endif
