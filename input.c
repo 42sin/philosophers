@@ -6,7 +6,7 @@
 /*   By: eozben <eozben@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 19:03:21 by eozben            #+#    #+#             */
-/*   Updated: 2022/01/23 23:08:17 by eozben           ###   ########.fr       */
+/*   Updated: 2022/01/23 23:19:20 by eozben           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,8 @@ int	get_input(int argc, char **argv, t_args *info)
 	while (i[0] < argc - 1)
 	{
 		check_int[i[0]] = ft_atoi(argv[i[1]]);
-		if (check_int[i[0]] <= -1
-			||check_int[i[0]] < INT_MIN || check_int[i[0]] > INT_MAX)
+		if (check_int[i[0]] <= -1 || check_int[0] == 0
+			|| check_int[i[0]] < INT_MIN || check_int[i[0]] > INT_MAX)
 			return (-1);
 		i[1]++;
 		i[0]++;

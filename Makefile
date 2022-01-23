@@ -6,14 +6,14 @@
 #    By: eozben <eozben@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/01/21 21:06:22 by eozben            #+#    #+#              #
-#    Updated: 2022/01/23 19:04:16 by eozben           ###   ########.fr        #
+#    Updated: 2022/01/23 23:48:23 by eozben           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
 FLAGS = -Wall -Wextra -Werror
 INC = philo.h
-SRCS = main.c input.c
+SRCS = main.c input.c philo_utils.c
 OBJ_PATH = ./objs/
 OBJS = $(patsubst %.c,$(OBJ_PATH)%.o,$(SRCS))
 

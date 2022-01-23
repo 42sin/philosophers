@@ -6,7 +6,7 @@
 /*   By: eozben <eozben@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 23:07:36 by eozben            #+#    #+#             */
-/*   Updated: 2022/01/23 23:08:42 by eozben           ###   ########.fr       */
+/*   Updated: 2022/01/23 23:48:32 by eozben           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,4 +27,5 @@ int	ft_usleep(long ms)
 	target = ft_gettimeofday() + (ms * 1000);
 	while (ft_gettimeofday() < target)
 		usleep(50);
+	return (0);
 }
