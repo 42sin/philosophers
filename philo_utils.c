@@ -1,35 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo.h                                            :+:      :+:    :+:   */
+/*   philo_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eozben <eozben@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/21 21:05:16 by eozben            #+#    #+#             */
-/*   Updated: 2022/01/23 23:07:57 by eozben           ###   ########.fr       */
+/*   Created: 2022/01/23 23:07:36 by eozben            #+#    #+#             */
+/*   Updated: 2022/01/23 23:08:42 by eozben           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILO_H
-# define PHILO_H
+#include "philo.h"
 
-# include <stdio.h>
-# include <unistd.h>
-# include <pthread.h>
-# include <stdlib.h>
-# include <sys/time.h>
-# include <limits.h>
-
-typedef struct s_args
+static long	ft_gettimeofday(void)
 {
-	int	number_philos;
-	int	time_to_die;
-	int	time_to_eat;
-	int	time_to_sleep;
-	int	number_philo_must_eat;
-}			t_args;
+	struct timeval	time;
 
-int	get_input(int argc, char **argv, t_args *info);
-int	ft_usleep(long ms);
+	gettimeofday(&time, NULL);
+	return ((long)(time.tv_sec * 1000000 + time.tv_usec));
+}
 
-#endif
+int	ft_usleep(long ms)
+{
+	long	target;
+
+	target = ft_gettimeofday() + (ms * 1000);
+	while (ft_gettimeofday() < target)
+		usleep(50);
+}
