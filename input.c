@@ -6,7 +6,7 @@
 /*   By: eozben <eozben@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 19:03:21 by eozben            #+#    #+#             */
-/*   Updated: 2022/01/23 23:19:20 by eozben           ###   ########.fr       */
+/*   Updated: 2022/01/31 19:28:46 by eozben           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	get_input(int argc, char **argv, t_args *info)
 		i[1]++;
 		i[0]++;
 	}
-	info->number_philos = check_int[0];
+	info->num_philos = check_int[0];
 	info->time_to_die = check_int[1];
 	info->time_to_eat = check_int[2];
 	info->time_to_sleep = check_int[3];
