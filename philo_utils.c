@@ -6,21 +6,11 @@
 /*   By: eozben <eozben@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 23:07:36 by eozben            #+#    #+#             */
-/*   Updated: 2022/01/31 23:46:10 by eozben           ###   ########.fr       */
+/*   Updated: 2022/02/02 02:01:43 by eozben           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-int	ft_strlen(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-		i++;
-	return (i);
-}
 
 int	destroy_forks(t_philo *philo_arr, pthread_mutex_t *forks, int i)
 {
@@ -37,20 +27,20 @@ int	free_structs(t_args *info)
 	return (-1);
 }
 
-long	ft_gettimeofday(void)
+time_t	ft_gettimeofday(void)
 {
 	struct timeval	time;
 
 	gettimeofday(&time, NULL);
-	return ((long)(time.tv_sec * 1000 + time.tv_usec / 1000));
+	return ((time_t)(time.tv_sec * 1000 + time.tv_usec / 1000));
 }
 
 int	ft_usleep(long ms)
 {
-	long	target;
+	time_t	target;
 
 	target = ft_gettimeofday() + ms;
 	while (ft_gettimeofday() < target)
-		usleep(50);
+		usleep(10);
 	return (0);
 }
