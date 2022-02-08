@@ -6,7 +6,7 @@
 /*   By: eozben <eozben@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 19:03:21 by eozben            #+#    #+#             */
-/*   Updated: 2022/02/02 02:30:53 by eozben           ###   ########.fr       */
+/*   Updated: 2022/02/08 19:56:36 by eozben           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,23 @@ int	get_input(int argc, char **argv, t_args *info)
 	info->time_to_sleep = check_int[3];
 	if (argc == 6)
 		info->number_philo_must_eat = check_int[4];
+	else
+		info->number_philo_must_eat = -1;
 	return (0);
+}
+
+int	init_mutex(t_args *info, t_philo *philo_array, t_mutex *forks, int i)
+{
+	if (pthread_mutex_init(&info->write_protect, NULL))
+		return (destroy_forks(philo_array, forks, i));
+	if (pthread_mutex_init(&info->death_lock, NULL))
+		return (destroy_forks(philo_array, forks, i));
+	if (pthread_mutex_init(&info->meal_lock, NULL))
+		return (destroy_forks(philo_array, forks, i));
+	if (pthread_mutex_init(&info->start_philos, NULL))
+		return (destroy_forks(philo_array, forks, i));
+	if (pthread_mutex_init(&info->eat_protect, NULL))
+		return (destroy_forks(philo_array, forks, i));
 }
 
 int	create_philos(t_args *info)
@@ -85,8 +101,8 @@ int	create_philos(t_args *info)
 		if (pthread_mutex_init(&forks[i++], NULL))
 			return (destroy_forks(philo_array, forks, i));
 	}
-	if (pthread_mutex_init(&info->write_protect, NULL))
-		return (destroy_forks(philo_array, forks, i));
+	if (init_mutex(info, philo_array, forks, i) == -1)
+		return (-1);
 	info->forks = forks;
 	info->philo_arr = philo_array;
 	return (0);
@@ -97,7 +113,8 @@ int	init_philos(t_args *info)
 	int	i;
 
 	i = 0;
-	info->death_occured = 'a';
+	info->death_occured = 0;
+	info->global_eat_count = 0;
 	while (i < info->num_philos)
 	{
 		info->philo_arr[i].right_fork = &info->forks[i];
@@ -105,6 +122,7 @@ int	init_philos(t_args *info)
 		info->philo_arr[i].ph_id = i;
 		info->philo_arr[i].info = info;
 		info->philo_arr[i].last_meal = 0;
+		info->philo_arr[i].eat_count = 0;
 		i++;
 	}
 	return (0);
