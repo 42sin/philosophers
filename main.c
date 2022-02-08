@@ -6,7 +6,7 @@
 /*   By: eozben <eozben@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 21:05:14 by eozben            #+#    #+#             */
-/*   Updated: 2022/02/08 19:48:04 by eozben           ###   ########.fr       */
+/*   Updated: 2022/02/08 19:57:37 by eozben           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ int	check_if_philo_died(t_args *info, int i)
 	return (0);
 }
 
-int	check_if_philo_ate(t_args *info, int i)
+int	check_if_philo_ate(t_args *info)
 {
 	if (info->global_eat_count >= info->num_philos
 		&& info->number_philo_must_eat != -1)
@@ -102,7 +102,7 @@ void	*reaper(void *args)
 			pthread_mutex_lock(&info->eat_protect);
 			if (check_if_philo_died(info, i))
 				return (NULL);
-			if (check_if_philo_ate(info, i))
+			if (check_if_philo_ate(info))
 				return (NULL);
 			pthread_mutex_unlock(&info->meal_lock);
 			pthread_mutex_unlock(&info->eat_protect);
