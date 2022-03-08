@@ -6,7 +6,7 @@
 /*   By: eozben <eozben@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 19:03:21 by eozben            #+#    #+#             */
-/*   Updated: 2022/02/08 19:56:36 by eozben           ###   ########.fr       */
+/*   Updated: 2022/03/02 18:33:17 by eozben           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ int	init_mutex(t_args *info, t_philo *philo_array, t_mutex *forks, int i)
 		return (destroy_forks(philo_array, forks, i));
 	if (pthread_mutex_init(&info->eat_protect, NULL))
 		return (destroy_forks(philo_array, forks, i));
+	return (0);
 }
 
 int	create_philos(t_args *info)
