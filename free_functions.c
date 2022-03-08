@@ -6,7 +6,7 @@
 /*   By: eozben <eozben@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 17:05:12 by eozben            #+#    #+#             */
-/*   Updated: 2022/03/08 17:05:47 by eozben           ###   ########.fr       */
+/*   Updated: 2022/03/08 21:28:55 by eozben           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,4 +25,17 @@ int	free_structs(t_args *info)
 {
 	destroy_forks(info->philo_arr, info->forks, -1);
 	return (-1);
+}
+
+int	destroy_threads(t_args *info, int i)
+{
+	pthread_mutex_lock(&info->death_lock);
+	info->death_occured = 1;
+	pthread_mutex_unlock(&info->start_philos);
+	pthread_mutex_unlock(&info->death_lock);
+	while (i >= 0)
+		pthread_join(info->philo_arr[i--].tid, NULL);
+	pthread_join(info->death_t, NULL);
+	return (destroy_forks(info->philo_arr, info->forks,
+			info->num_philos - 1));
 }

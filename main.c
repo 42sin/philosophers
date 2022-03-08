@@ -6,7 +6,7 @@
 /*   By: eozben <eozben@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 21:05:14 by eozben            #+#    #+#             */
-/*   Updated: 2022/03/08 17:11:02 by eozben           ###   ########.fr       */
+/*   Updated: 2022/03/08 21:30:35 by eozben           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,9 +59,11 @@ void	*philo(void *philo_struct)
 	t_philo	*philo;
 
 	philo = (void *)philo_struct;
+	if (check_death_lock(philo))
+		return (NULL);
 	pthread_mutex_lock(&philo->info->start_philos);
 	pthread_mutex_unlock(&philo->info->start_philos);
-	if (philo->ph_id % 2 == 1)
+	if (!check_death_lock(philo) && philo->ph_id % 2 == 1)
 		ft_usleep(philo->info->time_to_eat);
 	while (!check_death_lock(philo))
 		philo_routine(philo);
@@ -80,12 +82,12 @@ int	start_threads(t_args *info)
 	{
 		if (pthread_create(&info->philo_arr[i].tid, NULL, &philo,
 				(void *)&info->philo_arr[i]))
-			return (-1);
+			return (destroy_threads(info, i));
 		i++;
 	}
 	pthread_mutex_unlock(&info->start_philos);
 	if (pthread_create(&info->death_t, NULL, &reaper, (void *)info))
-		return (-1);
+		return (destroy_threads(info, i));
 	i = 0;
 	while (i < info->num_philos)
 		pthread_join(info->philo_arr[i++].tid, NULL);
