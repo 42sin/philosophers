@@ -6,7 +6,7 @@
 /*   By: eozben <eozben@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/01 00:46:31 by eozben            #+#    #+#             */
-/*   Updated: 2022/02/08 19:54:20 by eozben           ###   ########.fr       */
+/*   Updated: 2022/03/08 17:06:32 by eozben           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,6 @@ void	take_fork(t_philo *philo)
 				time_now(philo->info), philo->ph_id + 1);
 		pthread_mutex_unlock(&philo->info->write_protect);
 	}
-}
-
-int	drop_forks(t_mutex *l_fork, t_mutex *r_fork)
-{
-	if (r_fork != NULL)
-		pthread_mutex_unlock(r_fork);
-	if (l_fork != NULL)
-		pthread_mutex_unlock(l_fork);
-	return (1);
 }
 
 int	lock_forks(t_mutex *first_fork, t_mutex *second_fork, t_philo *philo)

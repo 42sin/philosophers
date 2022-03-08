@@ -6,7 +6,7 @@
 /*   By: eozben <eozben@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 21:05:16 by eozben            #+#    #+#             */
-/*   Updated: 2022/02/08 19:47:53 by eozben           ###   ########.fr       */
+/*   Updated: 2022/03/08 17:07:25 by eozben           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,5 +68,7 @@ int		create_philos(t_args *info);
 time_t	ft_gettimeofday(void);
 int		check_death_lock(t_philo *philo);
 time_t	time_now(t_args *info);
+int		check_if_philo_ate(t_args *info);
+int		check_if_philo_died(t_args *info, int i);
 
 #endif

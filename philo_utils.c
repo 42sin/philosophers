@@ -6,26 +6,11 @@
 /*   By: eozben <eozben@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 23:07:36 by eozben            #+#    #+#             */
-/*   Updated: 2022/02/08 19:47:45 by eozben           ###   ########.fr       */
+/*   Updated: 2022/03/08 17:07:04 by eozben           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-int	destroy_forks(t_philo *philo_arr, pthread_mutex_t *forks, int i)
-{
-	while (i >= 0)
-		pthread_mutex_destroy(&forks[i--]);
-	free(forks);
-	free(philo_arr);
-	return (-1);
-}
-
-int	free_structs(t_args *info)
-{
-	destroy_forks(info->philo_arr, info->forks, -1);
-	return (-1);
-}
 
 time_t	ft_gettimeofday(void)
 {
@@ -48,4 +33,13 @@ int	ft_usleep(long ms)
 time_t	time_now(t_args *info)
 {
 	return (ft_gettimeofday() - info->sim_start);
+}
+
+int	drop_forks(t_mutex *l_fork, t_mutex *r_fork)
+{
+	if (r_fork != NULL)
+		pthread_mutex_unlock(r_fork);
+	if (l_fork != NULL)
+		pthread_mutex_unlock(l_fork);
+	return (1);
 }

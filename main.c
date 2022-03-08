@@ -6,22 +6,35 @@
 /*   By: eozben <eozben@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 21:05:14 by eozben            #+#    #+#             */
-/*   Updated: 2022/02/08 19:57:37 by eozben           ###   ########.fr       */
+/*   Updated: 2022/03/08 17:11:02 by eozben           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	check_death_lock(t_philo *philo)
+void	*reaper(void *args)
 {
-	pthread_mutex_lock(&philo->info->death_lock);
-	if (philo->info->death_occured == 0)
+	t_args	*info;
+	int		i;
+
+	info = (void *)args;
+	while (1)
 	{
-		pthread_mutex_unlock(&philo->info->death_lock);
-		return (0);
+		i = 0;
+		while (i < info->num_philos)
+		{
+			pthread_mutex_lock(&info->meal_lock);
+			pthread_mutex_lock(&info->eat_protect);
+			if (check_if_philo_died(info, i))
+				return (NULL);
+			if (check_if_philo_ate(info))
+				return (NULL);
+			pthread_mutex_unlock(&info->meal_lock);
+			pthread_mutex_unlock(&info->eat_protect);
+			i++;
+		}
 	}
-	pthread_mutex_unlock(&philo->info->death_lock);
-	return (1);
+	return (NULL);
 }
 
 void	philo_routine(t_philo *philo)
@@ -52,63 +65,6 @@ void	*philo(void *philo_struct)
 		ft_usleep(philo->info->time_to_eat);
 	while (!check_death_lock(philo))
 		philo_routine(philo);
-	return (NULL);
-}
-
-int	check_if_philo_died(t_args *info, int i)
-{
-	if (info->philo_arr[i].last_meal + info->time_to_die < time_now(info))
-	{
-		pthread_mutex_unlock(&info->meal_lock);
-		pthread_mutex_lock(&info->death_lock);
-		info->death_occured = 1;
-		pthread_mutex_unlock(&info->death_lock);
-		pthread_mutex_lock(&info->write_protect);
-		printf("%ld %d died\n", time_now(info), info->philo_arr[i].ph_id + 1);
-		pthread_mutex_unlock(&info->write_protect);
-		pthread_mutex_unlock(&info->eat_protect);
-		return (1);
-	}
-	return (0);
-}
-
-int	check_if_philo_ate(t_args *info)
-{
-	if (info->global_eat_count >= info->num_philos
-		&& info->number_philo_must_eat != -1)
-	{
-		pthread_mutex_unlock(&info->meal_lock);
-		pthread_mutex_unlock(&info->eat_protect);
-		pthread_mutex_lock(&info->death_lock);
-		info->death_occured = 1;
-		pthread_mutex_unlock(&info->death_lock);
-		return (1);
-	}
-	return (0);
-}
-
-void	*reaper(void *args)
-{
-	t_args	*info;
-	int		i;
-
-	info = (void *)args;
-	while (1)
-	{
-		i = 0;
-		while (i < info->num_philos)
-		{
-			pthread_mutex_lock(&info->meal_lock);
-			pthread_mutex_lock(&info->eat_protect);
-			if (check_if_philo_died(info, i))
-				return (NULL);
-			if (check_if_philo_ate(info))
-				return (NULL);
-			pthread_mutex_unlock(&info->meal_lock);
-			pthread_mutex_unlock(&info->eat_protect);
-			i++;
-		}
-	}
 	return (NULL);
 }
 
