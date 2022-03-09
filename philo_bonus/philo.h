@@ -6,7 +6,7 @@
 /*   By: eozben <eozben@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 21:05:16 by eozben            #+#    #+#             */
-/*   Updated: 2022/03/09 00:39:42 by eozben           ###   ########.fr       */
+/*   Updated: 2022/03/09 17:26:22 by eozben           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,17 @@
 # include <signal.h>
 
 typedef struct s_philo	t_philo;
+typedef struct s_args	t_args;
 
-typedef struct s_args
+struct s_philo
+{
+	int				ph_id;
+	int				eat_count;
+	time_t			last_meal;
+	t_args			*info;
+};
+
+struct s_args
 {
 	int				num_philos;
 	int				time_to_die;
@@ -39,20 +48,13 @@ typedef struct s_args
 	sem_t			*start_philos;
 	sem_t			*eat_protect;
 	sem_t			*forks;
+	sem_t			*eat_sem;
 	bool			death_occured;
 	int				time_to_sleep;
 	int				global_eat_count;
 	int				number_philo_must_eat;
 	time_t			sim_start;
-	t_philo			*philo;
-}			t_args;
-
-struct s_philo
-{
-	int				ph_id;
-	int				eat_count;
-	time_t			last_meal;
-	t_args			*info;
+	t_philo			philo;
 };
 
 int		get_input(int argc, char **argv, t_args *info);
@@ -71,5 +73,6 @@ int		destroy_sems(t_args *info);
 int		close_sem(sem_t *sem);
 void	unlink_sems(void);
 int		lock_forks(t_philo *philo);
+void	check_eat(t_args *info);
 
 #endif

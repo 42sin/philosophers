@@ -6,7 +6,7 @@
 /*   By: eozben <eozben@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/01 00:46:31 by eozben            #+#    #+#             */
-/*   Updated: 2022/03/09 00:27:59 by eozben           ###   ########.fr       */
+/*   Updated: 2022/03/09 17:00:15 by eozben           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	increment_eat_count(t_philo *philo, char *to_do)
 		sem_wait(philo->info->eat_protect);
 		philo->eat_count += 1;
 		if (philo->eat_count == philo->info->number_philo_must_eat)
-			philo->info->global_eat_count += 1;
+			sem_post(philo->info->eat_sem);
 		sem_post(philo->info->eat_protect);
 	}
 }

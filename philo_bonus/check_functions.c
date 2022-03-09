@@ -6,7 +6,7 @@
 /*   By: eozben <eozben@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 17:00:44 by eozben            #+#    #+#             */
-/*   Updated: 2022/03/09 00:10:44 by eozben           ###   ########.fr       */
+/*   Updated: 2022/03/09 17:27:17 by eozben           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,15 @@ int	check_death_lock(t_philo *philo)
 
 int	check_if_philo_died(t_args *info)
 {
-	if (info->philo->last_meal + info->time_to_die < time_now(info))
+	if (info->philo.last_meal + info->time_to_die < time_now(info))
 	{
 		sem_post(info->meal_lock);
 		sem_wait(info->death_lock);
 		info->death_occured = 1;
 		sem_post(info->death_lock);
 		sem_wait(info->write);
-		printf("%ld %d died\n", time_now(info), info->philo->ph_id + 1);
+		printf("%ld %d died\n", time_now(info), info->philo.ph_id + 1);
+		kill(0, SIGINT);
 		sem_post(info->write);
 		sem_post(info->eat_protect);
 		return (1);
@@ -41,17 +42,16 @@ int	check_if_philo_died(t_args *info)
 	return (0);
 }
 
-int	check_if_philo_ate(t_args *info)
+void	check_eat(t_args *info)
 {
-	if (info->global_eat_count >= info->num_philos
-		&& info->number_philo_must_eat != -1)
+	int	global_eat_count;
+
+	global_eat_count = 0;
+	while (1)
 	{
-		sem_post(info->meal_lock);
-		sem_post(info->eat_protect);
-		sem_wait(info->death_lock);
-		info->death_occured = 1;
-		sem_post(info->death_lock);
-		return (1);
+		sem_wait(info->eat_sem);
+		global_eat_count += 1;
+		if (global_eat_count == info->num_philos)
+			kill(0, SIGINT);
 	}
-	return (0);
 }

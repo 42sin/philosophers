@@ -6,7 +6,7 @@
 /*   By: eozben <eozben@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 19:03:21 by eozben            #+#    #+#             */
-/*   Updated: 2022/03/09 01:12:29 by eozben           ###   ########.fr       */
+/*   Updated: 2022/03/09 17:11:20 by eozben           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,9 @@ int	init_sems(t_args *info)
 	info->forks = sem_open("/forks", O_CREAT, 0700, info->num_philos);
 	if (info->forks == SEM_FAILED)
 		return (destroy_sems(info));
+	info->eat_sem = sem_open("/eatcount", O_CREAT, 0700, 0);
+	if (info->eat_sem == SEM_FAILED)
+		return (destroy_sems(info));
 	return (0);
 }
 
@@ -98,13 +101,14 @@ int	create_philos(t_args *info)
 	philo.eat_count = 0;
 	philo.ph_id = 0;
 	philo.last_meal = 0;
-	info->philo = &philo;
+	info->philo = philo;
 	info->death_occured = 0;
 	info->global_eat_count = 0;
 	info->write = NULL;
 	info->death_lock = NULL;
 	info->meal_lock = NULL;
 	info->start_philos = NULL;
+	info->eat_sem = NULL;
 	info->eat_protect = NULL;
 	info->forks = NULL;
 	return (0);

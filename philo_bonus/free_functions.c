@@ -6,7 +6,7 @@
 /*   By: eozben <eozben@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 17:05:12 by eozben            #+#    #+#             */
-/*   Updated: 2022/03/09 01:12:16 by eozben           ###   ########.fr       */
+/*   Updated: 2022/03/09 02:21:32 by eozben           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ int	destroy_sems(t_args *info)
 	close_sem(info->start_philos);
 	close_sem(info->eat_protect);
 	close_sem(info->forks);
+	close_sem(info->eat_sem);
 	return (-1);
 }
 
@@ -38,4 +39,5 @@ void	unlink_sems(void)
 	sem_unlink("/start");
 	sem_unlink("/eat");
 	sem_unlink("/forks");
+	sem_unlink("/eatcount");
 }

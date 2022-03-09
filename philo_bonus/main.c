@@ -6,7 +6,7 @@
 /*   By: eozben <eozben@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 21:05:14 by eozben            #+#    #+#             */
-/*   Updated: 2022/03/09 01:17:42 by eozben           ###   ########.fr       */
+/*   Updated: 2022/03/09 17:27:02 by eozben           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,6 @@ void	*reaper(void *args)
 		sem_wait(info->meal_lock);
 		sem_wait(info->eat_protect);
 		if (check_if_philo_died(info))
-		{
-			kill(0, SIGTERM);
-			return (NULL);
-		}
-		if (check_if_philo_ate(info))
 			return (NULL);
 		sem_post(info->meal_lock);
 		sem_post(info->eat_protect);
@@ -64,6 +59,7 @@ void	philo(t_philo *philo)
 	if (check_death_lock(philo))
 		return ;
 	sem_wait(philo->info->start_philos);
+	sem_post(philo->info->start_philos);
 	if (!check_death_lock(philo) && philo->ph_id % 2 == 1)
 		ft_usleep(philo->info->time_to_eat);
 	while (!check_death_lock(philo))
@@ -83,30 +79,13 @@ int	start_philos(t_args *info)
 	while (i < info->num_philos)
 	{
 		if (pid != 0)
-		{
-			info->philo->ph_id = i;
-			printf(" id : %d\n", i);
 			pid = fork();
-		}
-		if (pid == 0)
-		{
-			printf(" id in process: %d\n", info->philo->ph_id);
-			if (pthread_create(&info->death_t, NULL, &reaper, (void *)info))
-				return (destroy_sems(info));
-			philo(info->philo);
-			pthread_join(info->death_t, NULL);
-			exit(0);
-		}
-		else
-		{
-			if (pid < 0)
-				return (destroy_sems(info));
-			i++;
-		}
+		processes(info, pid, i);
 	}
 	if (pid != 0)
 	{
 		sem_post(info->start_philos);
+		check_eat(info);
 		waitpid(-1, NULL, 0);
 	}
 	return (0);
