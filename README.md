@@ -39,14 +39,12 @@
 #### [Go to Subject PDF]
 [![Subject PDF][subjectImage]](en.philo_subject.pdf)
 
-This project is about the Dining Philosophers problem, which is a classic synchronization and concurrency problem that illustrates challenges in avoiding deadlock and ensuring the proper use of resources among multiple threads/processes. In this scenario, imagine five philosophers sitting around a dining table. Each philosopher alternates between thinking and eating. To eat, a philosopher needs both the left and right forks, which are placed between adjacent philosophers. The challenge is to design a solution that avoids deadlock (where no philosopher can finish eating) and ensures that philosophers can make progress without conflicts.
+This project is about the Dining Philosophers problem, which is a classic synchronization and concurrency problem that illustrates challenges in avoiding deadlock and ensuring the proper use of resources among multiple threads/processes. The challenge is to design a solution that avoids deadlock and ensures that philosophers can make progress without conflicts. There were several restrictions by the subject. The program must not have any data races, only a few standard library functions were allowed and the project must follow the 42 Norm. For more informations check out the <a href="en.philo_subject.pdf"> Subject PDF</a>.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- GETTING STARTED -->
 ## Getting Started
-
-The Project was tested on macOS, but it should work on all UNIX/LINUX based systems.
 
 ### Installation
 
@@ -67,6 +65,27 @@ The Project was tested on macOS, but it should work on all UNIX/LINUX based syst
 
 <!-- USAGE EXAMPLES -->
 ## Usage
+
+To run the program a few variables are needed:
+
+1. number_of_philosophers: The amount of philosophers and also the number of forks.
+2. time_to_die: In milliseconds, If a philosopher doesn’t start eating ’time_to_die’ milliseconds after starting their last meal or the beginning of the simulation, he dies.
+3. time_to_eat: In milliseconds, The time it takes for a philosopher to eat. During that time they will need to keep their forks.
+4. time_to_sleep: In milliseconds, The time the philosopher will spend sleeping.
+5. <optional> number_of_times_each_philosopher_must_eat: If all philosophers eat at least ’number_of_times_each_philosopher_must_eat’ the simulation will stop. If not specified, the simulation will stop only at the death of a philosopher.
+<br>
+Each action of a philosopher will result in his state being printed with a timestamp and his number.<br>
+A philosopher can:
+
+- grab a fork
+- eat
+- sleep
+- think
+- die
+<br>
+Here is a basic example of a running simulation.
+<img src="example.gif">
+
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
